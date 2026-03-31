@@ -6,4 +6,4 @@ from src.views.http_types.http_response import HttpResponse
 
 class ViewInterface(ABC):
     @abstractmethod
-    def __init__(self, http_request: HttpRequest) -> HttpResponse: pass
+    def handle(self, http_request: HttpRequest) -> HttpResponse: pass

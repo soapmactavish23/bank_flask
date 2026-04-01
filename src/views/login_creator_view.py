@@ -5,7 +5,7 @@ from src.views.http_types.http_response import HttpResponse
 from src.views.interfaces.view_interface import ViewInterface
 
 
-class UserRegisterView(ViewInterface):
+class LoginCreatorView(ViewInterface):
     def __init__(self, controller: LoginCreatorInterface):
         self.__controller = controller
 

@@ -1,28 +1,32 @@
 from typing import Dict
-
-from src.controllers.interfaces.user_register import UserRegisterInterface
 from src.drivers.password_handler import PasswordHandler
-from src.models.interface.user_repository_interface import UserRepositoryInterface
+from .interfaces.user_register import UserRegisterInterface
+from ..models.interface.user_repository_interface import UserRepositoryInterface
+
 
 class UserRegister(UserRegisterInterface):
     def __init__(self, user_repository: UserRepositoryInterface) -> None:
         self.__user_repository = user_repository
-        self.__password_handle = PasswordHandler()
+        self.__password_handler = PasswordHandler()
 
     def registry(self, username: str, password: str) -> Dict:
-        hashed_password = self.__create_hash_password(password)
-        self.__register_new_user(username, hashed_password)
+        hashed_password = self.__create_hashed_password(password)
+
+        self.__registry_new_user(username, hashed_password)
+
         return self.__format_response(username)
 
-    def __create_hash_password(self, password: str) -> bytes:
-        return self.__password_handle.encrypt_password(password)
+    def __create_hashed_password(self, password: str) -> str:
+        hashed_password = self.__password_handler.encrypt_password(password)
 
-    def __register_new_user(self, username: str, hashed_password: bytes) -> None:
-        self.__user_repository.register_user(username, hashed_password)
+        return hashed_password
+
+    def __registry_new_user(self, username: str, hashed_password: str) -> None:
+        self.__user_repository.registry_user(username, hashed_password)
 
     def __format_response(self, username: str) -> Dict:
         return {
             "type": "User",
             "count": 1,
-            "username": username
+            "username": username,
         }
